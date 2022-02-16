@@ -75,7 +75,7 @@
 	Bilinear pixel linearly interpolates the value at the given position from the values of the 4 pixels closest to the sample location. This method requires a bit more computation, but can help with antialiasing when compared to nearest neighbor sampling.  
 	</p>
 
-	<h4>When Biliear Sampling is Better</h4>
+	<h4>When Bilinear Sampling is Better</h4>
 	<p>Nearest sampling with n = 1 samples per pixel.</p><br>
 	<img style="width:600px" src = "img/task5_n_1.png"/><br><br>
 	<p>Nearest sampling with n = 16 samples per pixel.</p><br>
@@ -128,7 +128,7 @@
 					<p>This method is slower than nearest level sampling, but is less prone to aliasing.</p>
 				</li>
 			</ul>
-			<ul>Level sampling in general requires more memory, because we need to store the mip map of the image (essentially using twice the memory) of not using level sampling.
+			<ul>Level sampling in general requires more memory, because we need to store the mip map of the image (essentially using twice the memory) relative to not using level sampling.
 				However, utilizing level sampling has great antialiasing power because we are able to sample the texture image at a rate similar to that of the target image, reducing aliasing.
 			</ul>
 		</li>
@@ -137,12 +137,13 @@
 				Number of Samples per pixel
 			</h4>
 			<p>Increasing the number of samples per pixel is essentially increasing our sampling frequency, so it has great antialiasing power. 
-				However, it takes up much more memory since we have to store all our samples before we resolve to the framebuffer. Increasing the number of samples per pixel also greatly slows down our code since we have to sample more times and do much more computation to average out the sample values.</p>
+				However, it takes up much more memory since we have to store all our samples before we resolve to the framebuffer. 
+				Increasing the number of samples per pixel also greatly slows down our code since we have to sample more times and do much more computation to average out the sample values.</p>
 		</li>
 	</ul>
 
 	<h3>Testing on Our Own Images</h3>
-
+	<p>This can be seen in svg/texmap/test7.svg</p>
 	<p>L_ZERO and P_NEAREST</p><br>
 	<img style="width:600px" src = "img/t6_0_n.png"/><br><br>
 	<p>L_ZERO and P_BILINEAR</p><br>
