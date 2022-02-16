@@ -6,6 +6,8 @@
 <body>
 	<h1>CS184 Project 1</h1>
 	<h2>Matthew Tang, Kaitlyn Lee</h2>
+	<h3><a href = "https://cal-cs184-student.github.io/sp22-project-webpages-kaitlynlee/proj1/index.html">
+		https://cal-cs184-student.github.io/sp22-project-webpages-kaitlynlee/proj1/index.html</a></h3>
 
 	<h2>Task 1</h2>
 	Task 1 involved rasterizing triangles. We are given 3 vertex coordinates and a color to rasterize the triangle. We can do so by checking if a pixel is within the triangle, and if it is then we can fill it with that color. As shown in lecture, the way to determine if a pixel falls within the interior of the triangle is to do form a line equation. We select 2 vertex points to form the line equation and plug in the target point. One slight problem is that the sign of the result means different things depending on the order of the vertex points. A simple solution is to compute the same line test for the third unused triangle vertex point. If the target point and third vertex point yield answers of the same sign, then the target point falls within the triangle (since we know the third vertex point must be on the correct side).
@@ -56,6 +58,103 @@
 	<br/> <br/>
 	<img src="./img/task4.png" width="400">
 	<br /><br />
+
+	<h2>Task 5</h2>
+	<p>Pixel sampling is the act of sampling a color value from a discretized texture image at a given position in the continuous domain. 
+		For example, we might want to sample the color at position (1.5, 1.5), but this value isn't clearly defined since pixel positions are whole numbers. 
+		There are various sampling methods to define how we should evaluate this. 
+	</p>
+	<p>
+		We use pixel sampling to perform texture mapping. 
+		Given a triangle in the result image and the corresponding triangle in the texture image, we used Barycentric coordinates to sample the texture image at the location corresponding to a location in the resulting image. 
+	</p>
+	<p>
+	Nearest pixel sampling samples the texture image at the pixel with a center closest to the sample location. This method is very straightforward, but can lead to very blocky results.	
+	</p>
+	<p>
+	Bilinear pixel linearly interpolates the value at the given position from the values of the 4 pixels closest to the sample location. This method requires a bit more computation, but can help with antialiasing when compared to nearest neighbor sampling.  
+	</p>
+
+	<h4>When Biliear Sampling is Better</h4>
+	<p>Nearest sampling with n = 1 samples per pixel.</p><br>
+	<img style="width:600px" src = "img/task5_n_1.png"/><br><br>
+	<p>Nearest sampling with n = 16 samples per pixel.</p><br>
+	<img style="width:600px" src = "img/task5_n_16.png"/><br><br>
+	<p>Bilinear sampling with n = 1 samples per pixel.</p><br>
+	<img style="width:600px" src = "img/task5_b_1.png"/><br><br>
+	<p>Bilinear sampling with n = 16 samples per pixel.</p><br>
+	<img style="width:600px" src = "img/task5_b_16.png"/><br><br>
+	In general, using bilinear sampling over nearest sampling, or increasing the sampling rate seemed to reduce aliasing. 
+	Although the white line is continuous at full resolution, you can see that with nearest sampling and 1 sample per pixel, there are very obvious discontinuities in the line that can be seen from the full image. 
+	This is somewhat remedied by using bilinear sampling with 1 sample per pixel, but you can still see slight changes in line color. Nearest sampling with 16 samples per pixel reduces the issue even further, and bilinear sampling with 16 samples per pixel produces the smoothest image. 
+	<br><br>
+	There will be a large difference between the two methods of sampling when there are high frequency changes in the image relative to the resolution (such as when you are very zoomed out and looking at changes in a very thin line). 
+	This is because at a low resolution, we are sampling relatively few times with respect to the size of the texture image. 
+	Bilinear sampling helps reduce aliasing in this case by averaging out the values of our samples with those of its surrounding, essentially lowering the frequency. 
+	<h2>Task 6</h2>
+	Level sampling is that act of sampling from different levels of the mipmap, a data structure that stores smaller versions of the original texture image that have had the higher frequencies filtered out. Each level in the mipmap is 1/4 the size of the previous layer (halve both dimensions), and also filters out high frequencies. When our target image is lower resolution, we sample from  in order to reduce aliasing. 
+	Based on the resolution of the image to display, we calculate the mip map level we should be sampling at (that is, the level of the mipmap where the texture image has the closest change in frequency to the target image.) 
+	There were two appoaches to deciding what mip map level to sample from; the nearest level approach simply sampled at the level nearest to the level calculated (which was a float). 
+	The bilinear interpolation level approach sampled the mip map at the two levels above and below the level calculated, and then linearly interpolated between the values to return a final value. 
+
+	<h4>Tradeoffs</h4>
+	<ul>
+		<li>
+			<h4>
+				Pixel Sampling
+			</h4>
+			<ul>
+				<li>
+					<h5>Nearest Sampling</h5>
+					<p>This method is faster than bilinear sampling since there is less computation, but is more prone to aliasing.</p>
+				</li>
+				<li>
+					<h5>Bilinear Sampling</h5>
+					<p>This method is slower than nearest sampling, but has more antialiasing power.</p>
+				</li>
+			</ul>
+		</li>
+		<li>
+			<h4>
+				Level Sampling
+			</h4>
+			<ul>
+				<li>
+					<h5>Nearest Sampling</h5>
+					<p>This method is faster than bilinear level sampling since we only sample once, but is more prone to aliasing, especially when the mip map level is not a good match for the image resolution.</p>
+				</li>
+				<li>
+					<h5>Bilinear Sampling</h5>
+					<p>This method is slower than nearest level sampling, but is less prone to aliasing.</p>
+				</li>
+			</ul>
+			<ul>Level sampling in general requires more memory, because we need to store the mip map of the image (essentially using twice the memory) of not using level sampling.
+				However, utilizing level sampling has great antialiasing power because we are able to sample the texture image at a rate similar to that of the target image, reducing aliasing.
+			</ul>
+		</li>
+		<li>
+			<h4>
+				Number of Samples per pixel
+			</h4>
+			<p>Increasing the number of samples per pixel is essentially increasing our sampling frequency, so it has great antialiasing power. 
+				However, it takes up much more memory since we have to store all our samples before we resolve to the framebuffer. Increasing the number of samples per pixel also greatly slows down our code since we have to sample more times and do much more computation to average out the sample values.</p>
+		</li>
+	</ul>
+
+	<h3>Testing on Our Own Images</h3>
+
+	<p>L_ZERO and P_NEAREST</p><br>
+	<img style="width:600px" src = "img/t6_0_n.png"/><br><br>
+	<p>L_ZERO and P_BILINEAR</p><br>
+	<img style="width:600px" src = "img/t6_0_b.png"/><br><br>
+	<p>L_NEAREST and P_NEAREST</p><br>
+	<img style="width:600px" src = "img/t6_n_n.png"/><br><br>
+	<p>L_NEAREST and P_BILINEAR</p><br>
+	<img style="width:600px" src = "img/t6_n_b.png"/><br><br>
+
+	As you can see, both the images using L_ZERO have obvious aliasing; you cannot clearly see the rows of bricks, and from far away looks like a random mishmash of pixels. 
+	This is clearly improved by using L_NEAREST-- you can more clearly see the rows of bricks. Using P_BILINEAR over P_NEAREST helps reduce aliasing even further; the rows look much more blended when using P_BILINEAR.
+
 </body>
 
 </html>
