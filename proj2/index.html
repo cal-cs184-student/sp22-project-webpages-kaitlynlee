@@ -1,7 +1,59 @@
 <html>
-	<head>
-	</head>
-	<body>
-		Project 2 here
-	</body>
+
+<head>
+</head>
+
+<body>
+	<h1>CS184 Project 2</h1>
+	<h2>Matthew Tang, Kaitlyn Lee</h2>
+
+	<h2>Task 1</h2>
+	Task 1 involved implementing a single iteration of de Casteljau's algorithm. We are given n control points and the
+	parameter t, and the output is n-1 control points. de Casteljau's algorithm uses linear interpolation on the points
+	in a similar fashion to a sliding window of size 2. Repeated calls to this algorithm will slowly reduce the number
+	of control points until only one is left.
+	<br /><br />
+	
+	Here are screenshots of a 6 point custom bezier curve I made, cycling through the levels.
+	<br /><br />
+	<img src="./img/part1/bz0.png" width="300">
+	<img src="./img/part1/bz1.png" width="300">
+	<img src="./img/part1/bz2.png" width="300">
+	<img src="./img/part1/bz3.png" width="300">
+	<img src="./img/part1/bz4.png" width="300">
+	<img src="./img/part1/bz5.png" width="300">
+	<br /><br />
+
+	Completed version
+	<br /><br />
+	<img src="./img/part1/bz_completed.png" width="300">
+	<br /><br />
+
+	We can also move the control points around and change t by scrolling. Here are different values of t.
+	<br /><br />
+	<img src="./img/part1/bz_t0.png" width="300">
+	<img src="./img/part1/bz_t1.png" width="300">
+	<img src="./img/part1/bz_t2.png" width="300">
+	<br /><br />
+
+	<h2>Task 2</h2>
+	We can extend the de Casteljau algorithm to Bezier surfaces. Now we are dealing with points in 3D space, but our Task 1 implementation is only 2D. This means we can run the 2D de Casteljau algorithm for 2 dimensions, meaning we have 2 parameters u and v instead of just t. A surface will have a 2D array (n x n) of control points instead of just a 1D array of control points. We can choose a dimension to begin with and run the 2D algorithm (operating on 3D points) to come up with n output points from using the u parameter. Then we can use these outputs to run the de Casteljau algorithm again using the v parameter to end up with just one point.
+	<br /><br />
+	Here is a bezier surface of a teapot
+	<br /><br />
+	<img src="./img/part2/teapot.png" width="500">
+	<br /><br />
+
+	<h2>Task 3</h2>
+	Task 3 involved implementing area-weighted vertex normals to accomplish smooth shading. We can use a do while loop to get three vertices making up each face adjacent to the given vertex. We can use these 3 vertex positions to compute 2 vectors and take their cross product to achieve a normal vector orthogonal to the face. Instead of making the vector unit length, we leave it as is since the magnitude of the normal vector is effectively weighting it by its area. Then we can add up all the normal vectors and normalize the final output to get the area-weighted vertex normal. 
+
+	We can see the before (left) and after (right) producing much smoother shading.
+	<br /><br />
+	<img src="./img/part3/teapot_noshading.png" width="500">
+	<img src="./img/part3/teapot_shading.png" width="500">
+	<br /><br />
+
+	<h2>Task 4</h2>
+</body>
+
 </html>
