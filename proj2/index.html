@@ -6,7 +6,7 @@
 <body>
 	<h1>CS184 Project 2</h1>
 	<h2>Matthew Tang, Kaitlyn Lee</h2>
-
+	<a href ="https://cal-cs184-student.github.io/sp22-project-webpages-kaitlynlee/proj2/index.html">https://cal-cs184-student.github.io/sp22-project-webpages-kaitlynlee/proj2/index.html</a>
 	<h2>Task 1</h2>
 	Task 1 involved implementing a single iteration of de Casteljau's algorithm. We are given n control points and the
 	parameter t, and the output is n-1 control points. de Casteljau's algorithm uses linear interpolation on the points
@@ -54,6 +54,121 @@
 	<br /><br />
 
 	<h2>Task 4</h2>
+
+	Edge flipping involves switching edge BC between triangles ABC and BCD to be edge AD between triangles ABD and ACD instead. 
+	We implemented edge flipping by first identifying all the edges, vertices, faces, and halfedges in the original pair of triangles. We then reassigned all the pointers following the below diagram, 
+	where edges of the same color in both sides of the diagram represent the same halfedge object. 
+	<br>
+	<img style = "width:800px" src = "img/part4/flip.png"/><br><br>
+	Before <br>
+	<img style = "width: 500px" src = "img/part4/before.png"/><br><br>
+	Flipped just 1 edge <br>
+	<img style = "width: 500px" src = "img/part4/after.png"/><br><br>
+	Flipped a lot of edges <br>
+	<img style = "width: 500px" src = "img/part4/alot.png"/><br><br>
+	<h4>Debugging Journey</h4>
+	While we didn't have a terribly long debugging journey, we initially did end up flipping some of our pointers and assigning half edges to the wrong. We fixed it by carefully going through our diagram and making sure everything pointed to the right place. 
+	<h2>Task 5</h2>
+	Edge splitting involves splitting edge BC between triangles ABC and BCD at the midpoint of BC, and adding edges from A and D to this new midpoint. We first created the new faces, edges, halfedges, and vertex that are a result of the split, and then reassigned the pointers for both the new structures and the original structures. 
+	You can see how we reorganized the pointers according to the diagram below, where arrows of the same color in both sides of the diagram represent the same halfedge object, and new structures are represented with the legend below.
+	<br>
+	<img style = "width: 800px" src = "img/part5/split.png"/><br><br>
+	Before <br>
+	<img style = "width: 500px" src = "img/part5/before.png"/><br><br>
+	Split just 1 edge <br>
+	<img style = "width: 500px" src = "img/part5/after_split.png"/><br><br>
+	Split a lot of edges <br>
+	<img style = "width: 500px" src = "img/part5/after_many_split.png"/><br><br>
+	Split and flipped a lot of edges <br>
+	<img style = "width: 500px" src = "img/part5/after_both.png"/><br><br>
+	A different angle of how the mesh has changed <br>
+	<img style = "width: 500px" src = "img/part5/after_both_diff_angle.png"/><br><br>
+	<h4>Debugging Journey</h4>
+	We actually didn't have too many bugs with this part! The diagram really helped us get it right the first time. 
+	<h2>Task 6</h2>
+
+	We implemented the following algorithm to perform loop subdivision. 
+	<ol>
+		<li>
+			We first made sure we cleared all the edges and vertices of their isNew flags (since these are set during split, which can be done independent of loop subdivision.)
+		</li>
+		<li>
+			We iterate through all the vertices of the original mesh and calculate their new positions based on the loop subdivision rule (as mentioned in lecture). We store this new position in vertex->newPosition, and set the isNew flag for the vertex to false, in order to indicate that this vertex is from the original mesh. 
+		</li>
+		<li>
+			We then iterate through all the edges, and calculated the vertex position associated with the edge (that is, the position of the newly created vertex when we split the edge). We store this position in Edge::newPosition.
+		</li>
+		<li>
+			We split every edge in the original mesh. We keep track of what edges are added (and weren't the result of splitting an existing edge in half) by setting the isNew flag on such edges in splitEdge(). We make sure we only iterate over the original edges by storing the number of edges in the mesh before splitting, and then only iterating over that number of edges, since new edges get added to the end of the list of edges. 
+			We also mark the newly created vertex in splitEdge() with isNew = true. We then update the newPosition attribute of the new vertex returned by splitEdge().
+		</li>
+		<li>
+			We then flip any new edge that connects and old and new vertex (we can check this using the isNew flags we set on the edges and vertices)
+		</li>
+		<li>
+			We then iterate through all the vertices and set their positions to the calculated position (we set Vertex::postion = Vertex::newPosition), and reset all the isNew flags. We also iterate through all the edges and make sure we reset the isNew flags. 
+		</li>
+	</ol>
+
+
+
+	<br><br>
+	We notice that meshes tend to become rounder and lose their sharp corners and edges after loop subdivision. For example, in the images below, the torus shape goes from hexagonal to very round.<br><br>
+	Torus (original)<br>
+	<img style = "width: 500px" src = "img/part6/torus_before.png"/><br><br>
+	Upsampled one time <br>
+	<img style = "width: 500px" src = "img/part6/torus_1.png"/><br><br>
+	Upsampled twice <br>
+	<img style = "width: 500px" src = "img/part6/torus_2.png"/><br><br>
+
+	We can reduce this effect by presplitting the edges that we want to maintain the shape of. In the below images, we split the other edges of the torus. <br><br>
+
+	Torus (with split outer edges)<br>
+	<img style = "width: 500px" src = "img/part6/torus_outer.png"/><br><br>
+	Upsampled one time <br>
+	<img style = "width: 500px" src = "img/part6/torus_outer_1.png"/><br><br>
+	Upsampled twice <br>
+	<img style = "width: 500px" src = "img/part6/torus_outer_2.png"/><br><br>
+
+	As you can see, the upsampled image is slightly more hexagonal than the upsampled torus without any pre-split edges. We can enhance this effect by also pre-splitting the inner edges, as seen below. The resulting image has a much more obvious hexagonal shape, and the sharp corners can still be seen, even after upsampling three times. <br><br>
+	Torus (with split outer edges and split inner edges)<br>
+	<img style = "width: 500px" src = "img/part6/torus_both.png"/><br><br>
+	Upsampled one time <br>
+	<img style = "width: 500px" src = "img/part6/torus_both_1.png"/><br><br>
+	Upsampled twice <br>
+	<img style = "width: 500px" src = "img/part6/torus_both_2.png"/><br><br>
+	Upsampled three times <br>
+	<img style = "width: 500px" src = "img/part6/torus_both_3.png"/><br><br>
+
+	<h4>Asymmetrical Cube</h4>
+	We noticed that when upsampling the cube, the cube became somewhat asymmetrical, as seen below. <br><br>
+	Original cube<br>
+	<img style = "width: 500px" src = "img/part6/cube.png"/><br><br>
+	Upsampled one time <br>
+	<img style = "width: 500px" src = "img/part6/cube_1.png"/><br><br>
+	Upsampled twice <br>
+	<img style = "width: 500px" src = "img/part6/cube_2.png"/><br><br>
+	Upsampled three times <br>
+	<img style = "width: 500px" src = "img/part6/cube_3.png"/><br><br>
+
+	The original cube probably became asymmetrical when we upsampled because the original mesh was asymmetrical to begin with. We can imagine upsampling like we're dragging the mesh inward, so the shape will become more round, and it will also keep any traces of asymmetry in the original mesh since the vertices are different distances from the center of the mesh. <br><br>
+
+	We remedied this issue by splitting the mesh such that it was radially symmetrical, which reduced the asymmetry when upsampling since now all points on the mesh were drawn inward equally. We also split the edges on the edge of the cube, which helped the cube keep its cube shape since it was almost as if we were manually upsampling the mesh. Therefore, when we used loop subdivision it maintained much more shape than the original cube did.  
+<br><br>
+	Pre-processed cube<br>
+	<img style = "width: 500px" src = "img/part6/sym_before.png"/><br><br>
+	Upsampled one time <br>
+	<img style = "width: 500px" src = "img/part6/sym_1.png"/><br><br>
+	Upsampled twice <br>
+	<img style = "width: 500px" src = "img/part6/sym_2.png"/><br><br>
+	Upsampled three times <br>
+	<img style = "width: 500px" src = "img/part6/sym_3.png"/><br><br>
+	Upsampled three times from the side <br>
+	<img style = "width: 500px" src = "img/part6/sym_3_side.png"/><br><br>
+
+	<h4>Debugging Journey</h4>
+	We did have some interesting bugs in this part. Initially, we were marking all edges created in splitEdge(), including those that were a result of the orginal edge splitting in half, as new, but this meant that we incorrect flipped them, leading to an infinite loop when we tried to display the mesh. After we fixed this bug, we had another bug where we were not correctly updating the vertex positions to the new positions. However, this caused some really interested outputs, such as this braided taurus. <br>
+	<img style = "width: 600px" src = "img/part6/sus.png"/><br><br>
 </body>
 
 </html>
