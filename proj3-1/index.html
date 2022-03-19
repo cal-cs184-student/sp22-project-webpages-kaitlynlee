@@ -6,60 +6,58 @@
 		<h1>CS184 Project 3-1</h1>
 		<h2>Matthew Tang, Kaitlyn Lee</h2>
 		<h2>Part 1</h2>
-		Walk through the ray generation and primitive intersection parts of the rendering pipeline.
-
-
-		Explain the triangle intersection algorithm you implemented in your own words.
-
-
-
-		<h4>A few images with normal shading</h4>
-		<img src = "part2/CBempty.png" style = "width:600px"/><br><br>
-		<img src = "part2/CBspheres.png" style = "width:600px"/><br><br>
-		<img src = "part2/cow.png" style = "width:600px"/>
+		In part 1, we wrote code to generate rays. We can use the equations given in the spec, translating by .5 and then multiplying by tan(hFov/2) (hFoV or vFoV depending on x/y). We multiply this by 2 to ensure the top right corner is (tan(hFov/2), tan(vFov/2), -1).
+		<br/><br/>
+		For ray-triangle intersection, we can use barycentric coordinates to check if the intersection lies inside the triangle. The Muller Trumbore algorithm was useful, given a ray, to compute t, alpha, and beta (for the barycentric coordinates).
+		<br/><br/>
+		For ray-sphere intersection, we followed the procedure in lecture. Ray-sphere intersections can be determined using the quadratic formula. We computed the determinant (using a,b,c formulas from lecture) and if the determinant was negative, we concluded there was no intersections (because no real t values). Otherwise we calculated the t values that were solutions to the quadratic formula.
+		<br/><br/>
+		Here are some renderings of normal shading for small dae files (CBempty and CBspheres)		
+		<br/><br/>
+		<img src = "img/part1/CBempty.png" style = "width:400px"/><br><br>
+		<img src = "img/part1/CBspheres.png" style = "width:400px"/><br><br>
 
 
 		<h2>Part 2</h2>
+		To construct the BVH, first we compute the bbox containing all the items and also compute the average centroid location. If the number of items currently is less than or equal to the max leaf size, we just return the current node. Otherwise, we calculate the longest axis (using values cached from computing the bbox) and then we use a lambda function to split objects if they are less than the mean on the left, and right otherwise. At one point we ran into a bug where there were 0 items in some splits, so if that is the case then we move the iterator over to ensure that the split is not degenerate.
+		<br/><br/>
+		Here are some renderings of normal shading for large dae files. The time it would take to render them without BVH would be infeasible (>30mins-1hr most likely).		
+		<br/><br/>
 
-		<img src = "img/part2/CBLucy.png" style = "width:600px"/>
-		[PathTracer] Rendering... 100%! (0.0561s)
+		<img src = "img/part2/CBLucy.png" style = "width:400px"/>
+		<br/>
 		Rendering... 100%! (0.1343s)
+		<br/><br/>
 
-		<img src = "img/part2/maxplanck.png" style = "width:600px"/>
+		<img src = "img/part2/maxplanck.png" style = "width:400px"/>
+		<br/>
 		Rendering... 100%! (0.1911s)
-		<img src = "img/part2/banana.png" style = "width:600px"/>
-		[PathTracer] Building BVH from 2458 primitives... Done! (0.0000 sec)
-		Rendering... 100%! (25.8666s)
-		Rendering... 100%! (28.1280s)
-		Rendering... 100%! (32.4833s)
-		Optimized:
-		Rendering... 100%! (0.1522s)
-		[PathTracer] Building BVH from 2458 primitives... Done! (0.0009 sec)
+		<br/><br/>
 
-		<img src = "img/part2/cow.png" style = "width:600px"/>
-		Rendering... 100%! (87.3210s)
-		Rendering... 100%! (87.5035s)
-		[PathTracer] Building BVH from 5856 primitives... Done! (0.0001 sec)
-		optimized
-		cow
-		Rendering... 100%! (0.2105s)
-		Rendering... 100%! (0.1349s)
-		Rendering... 100%! (0.2507s)
-		[PathTracer] Building BVH from 5856 primitives... Done! (0.0023 sec)
+		We rendered medium sized dae files with and without BVH to compare the speedup. All of the reported times are averaged over 3 trials. Banana had 2458 primitives and took an average of 28.83 seconds without optimization, and took an average of 0.1522 seconds with optimization. The cow had 5856 primitives took an average of 87.32 seconds without optimization, and took an average of 0.1987 seconds with optimization. Thus it seems that the unoptimized version has a render time linear with respect to the number of primitives, but the BVH optimized version is clearly sublinear (log N or almost constant time). Very large dae files render in less than one second, while they would not render at all without optimization, showing clear improvement.
+		<br/><br/>
 
-		<img src = "img/part2/teapot.png" style = "width:600px"/>
-		Rendering... 100%! (26.1212s)
-		[PathTracer] Building BVH from 2464 primitives... Done! (0.0000 sec)
-		optimized
-		teapot
-		Rendering... 100%! (0.1228s)
-		Rendering... 100%! (0.1533s)
-		Rendering... 100%! (0.1564s)
-		[PathTracer] Building BVH from 2464 primitives... Done! (0.0009 sec)
+		<img src = "img/part2/banana.png" style = "width:400px"/>
+		<br/><br/>
+
+		<img src = "img/part2/cow.png" style = "width:400px"/>
+		<br/><br/>
+
+		<br/><br/><br/><br/><br/>
+		<h2>Part 3</h2>
+		In part 3, we implemented two different methods of direct lighting estimates. The first is using uniform hemisphere sampling. In this method, we can sample uniformly within the hemisphere to get wj. Then we can create a new ray and intersection object to check intersection with the BVH. If there is not a hit, we just continue to the next sample. If there is a hit, we use the reflection equation with Li = zero bounce radiance. We make sure to average over all the samples before we return.
+		<br/><br/>
+		The other method is importance sampling. In this method, we can iterate through each light in the scene and sample directions between the light source and hit_p. The rest of this method follows similarly from the other method, using the reflectance equation (Li = sample_L this time not zero bounce radiance).
+
+		The main difference between uniform hemisphere sampling and importance lighting is that the former is more grainy and the latter is clearer. This is because importance sampling focuses on the directions that matter more (where we know the light is coming from) to achieve a clearer result.
 
 		<br/><br/><br/><br/><br/>
 		<h2>Part 4</h2>
-		For part 4, we implemented indirect lighting. The idea is that we initialize L to be
+		For part 4, we implemented indirect lighting. The idea is that we initialize L_out to be the one_bounce_radiance with the current r and isect objects. We then call sample_f on the isect bdf to obtain a wj and pdf. We can reuse code from part 3 to create a new ray and isect object and check if it intersects the bvh. If it doesn't intersect, just return L_out. If it does intersect, we can make a recursive call to at_least_one_bounce_radiance with the new ray and isect objects. We can then compute the L_out using the reflectance equation.
+		<br/><br/>
+		One more feature we added was russian roulette to speed things up. We set p_terminate to be 0.3, and use coin_flip with that probability to determine if we terminate. If we terminate, we do not make any further recursive calls.
+
+		TODO: Add images.
 
 		<br/><br/><br/><br/><br/>
 		<h2>Part 5</h2>
