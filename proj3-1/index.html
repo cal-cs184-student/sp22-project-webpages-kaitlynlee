@@ -64,7 +64,7 @@
 		The main difference between uniform hemisphere sampling and importance lighting is that the former is more grainy and the latter is clearer. This is most evident in the background walls of all the left images (far grainier than the right images). This is because importance sampling focuses on the directions that matter more (where we know the light is coming from) to achieve a clearer result.
 		<br/><br/>
 
-		Here is the bunny scene with 1,4,16, and 64 light rays (1 sample per pixel using light sampling).
+		Here is the bunny scene with 1,4,16, and 64 light rays (1 sample per pixel using light sampling). The noise levels in soft shadows decreases as the number of light rays increases.
 		<br/><br/>
 		<img src="./img/part3/bunny_1_1.png" width="300">
 		<img src="./img/part3/bunny_1_4.png" width="300">
@@ -83,18 +83,19 @@
 		<img src="./img/part4/dragon_1024.png" width="300">
 		<img src="./img/part4/spheres_1024.png" width="300">
 		<br/><br/>
-		Here is a comparison between only direct and only indirect.
+		Here is a comparison between only direct (left) and only indirect (right).
 		<br/><br/>
-		TODO
+		<img src="./img/part4/bunny_dir_only_1024_6_5.png" width="300">
+		<img src="./img/part4/bunny_indir_only_1024_6_5.png" width="300">
 		<br/><br/>
-		Here is a comparison between 0, 1, 2, 3, 100 for max ray depth for CBBunny.<br/>
+		Here is a comparison between 0, 1, 2, 3, 100 for max ray depth for CBBunny. The lighting becomes brighter as the max ray depth increases, although the difference between 3 and 100 is hard to distinguish (diminishing returns on higher max ray depth).<br/>
 		<img src="./img/part4/bunny_0.png" width="300">
 		<img src="./img/part4/bunny_1.png" width="300">
 		<img src="./img/part4/bunny_2.png" width="300">
 		<img src="./img/part4/bunny_3.png" width="300">
 		<img src="./img/part4/bunny_100.png" width="300">
 		<br/><br/>
-		Here is a render of the dragon using various sample per pixel rates (1,2,4,8,16,64,128,1024)
+		Here is a render of the dragon using various sample per pixel rates (1,2,4,8,16,64,128,1024). The dragon is less grainy as the sample per pixel rate increases.
 		<br/><br/>
 		<img src="./img/part4/dragon_1_4_6.png" width="300">
 		<img src="./img/part4/dragon_2_4_6.png" width="300">
@@ -103,7 +104,7 @@
 		<img src="./img/part4/dragon_16_4_6.png" width="300">
 		<img src="./img/part4/dragon_64_4_6.png" width="300">
 		<img src="./img/part4/dragon_128_4_6.png" width="300">
-		<img src="./img/part4/" width="300">
+		<img src="./img/part4/dragon_1024_4_6.png" width="300">
 
 		<br/><br/><br/><br/><br/>
 		<h2>Part 5</h2>
