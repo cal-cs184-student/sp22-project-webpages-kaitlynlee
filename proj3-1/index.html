@@ -2,9 +2,9 @@
 	<head>
 	</head>
 	<body>
-		Project 3-1 here
 		<h1>CS184 Project 3-1</h1>
 		<h2>Matthew Tang, Kaitlyn Lee</h2>
+		https://cal-cs184-student.github.io/sp22-project-webpages-kaitlynlee/proj3-1/index.html
 		<h2>Part 1</h2>
 		In part 1, we wrote code to generate rays. We can use the equations given in the spec, translating by .5 and then multiplying by tan(hFov/2) (hFoV or vFoV depending on x/y). We multiply this by 2 to ensure the top right corner is (tan(hFov/2), tan(vFov/2), -1).
 		<br/><br/>
@@ -48,8 +48,28 @@
 		In part 3, we implemented two different methods of direct lighting estimates. The first is using uniform hemisphere sampling. In this method, we can sample uniformly within the hemisphere to get wj. Then we can create a new ray and intersection object to check intersection with the BVH. If there is not a hit, we just continue to the next sample. If there is a hit, we use the reflection equation with Li = zero bounce radiance. We make sure to average over all the samples before we return.
 		<br/><br/>
 		The other method is importance sampling. In this method, we can iterate through each light in the scene and sample directions between the light source and hit_p. The rest of this method follows similarly from the other method, using the reflectance equation (Li = sample_L this time not zero bounce radiance).
+		<br/><br/>
 
-		The main difference between uniform hemisphere sampling and importance lighting is that the former is more grainy and the latter is clearer. This is because importance sampling focuses on the directions that matter more (where we know the light is coming from) to achieve a clearer result.
+		Here are some images rendered as hemisphere (left) and importance (right). <br/>
+		<img src="./img/part3/coil_64_32_H.png" width="300">
+		<img src="./img/part3/coil_64_32_I.png" width="300">
+		<br/><br/>
+		<img src="./img/part3/spheres_64_32_H.png" width="300">
+		<img src="./img/part3/spheres_64_32_I.png" width="300">
+		<br/><br/>
+		<img src="./img/part3/bunny_64_32_H.png" width="300">
+		<img src="./img/part3/bunny_64_32_I.png" width="300">
+
+		<br/><br/>
+		The main difference between uniform hemisphere sampling and importance lighting is that the former is more grainy and the latter is clearer. This is most evident in the background walls of all the left images (far grainier than the right images). This is because importance sampling focuses on the directions that matter more (where we know the light is coming from) to achieve a clearer result.
+		<br/><br/>
+
+		Here is the bunny scene with 1,4,16, and 64 light rays (1 sample per pixel using light sampling).
+		<br/><br/>
+		<img src="./img/part3/bunny_1_1.png" width="300">
+		<img src="./img/part3/bunny_1_4.png" width="300">
+		<img src="./img/part3/bunny_1_16.png" width="300">
+		<img src="./img/part3/bunny_1_64.png" width="300">
 
 		<br/><br/><br/><br/><br/>
 		<h2>Part 4</h2>
@@ -57,13 +77,39 @@
 		<br/><br/>
 		One more feature we added was russian roulette to speed things up. We set p_terminate to be 0.3, and use coin_flip with that probability to determine if we terminate. If we terminate, we do not make any further recursive calls.
 
-		TODO: Add images.
+		<br/><br/>
+		Here are some rendered images using 1024 samples per pixel.<br/>
+		<img src="./img/part4/bunny_1024.png" width="300">
+		<img src="./img/part4/dragon_1024.png" width="300">
+		<img src="./img/part4/spheres_1024.png" width="300">
+		<br/><br/>
+		Here is a comparison between only direct and only indirect.
+		<br/><br/>
+		TODO
+		<br/><br/>
+		Here is a comparison between 0, 1, 2, 3, 100 for max ray depth for CBBunny.<br/>
+		<img src="./img/part4/bunny_0.png" width="300">
+		<img src="./img/part4/bunny_1.png" width="300">
+		<img src="./img/part4/bunny_2.png" width="300">
+		<img src="./img/part4/bunny_3.png" width="300">
+		<img src="./img/part4/bunny_100.png" width="300">
+		<br/><br/>
+		Here is a render of the dragon using various sample per pixel rates (1,2,4,8,16,64,128,1024)
+		<br/><br/>
+		<img src="./img/part4/dragon_1_4_6.png" width="300">
+		<img src="./img/part4/dragon_2_4_6.png" width="300">
+		<img src="./img/part4/dragon_4_4_6.png" width="300">
+		<img src="./img/part4/dragon_8_4_6.png" width="300">
+		<img src="./img/part4/dragon_16_4_6.png" width="300">
+		<img src="./img/part4/dragon_64_4_6.png" width="300">
+		<img src="./img/part4/dragon_128_4_6.png" width="300">
+		<img src="./img/part4/" width="300">
 
 		<br/><br/><br/><br/><br/>
 		<h2>Part 5</h2>
 		For part 5, we implemented adaptive sampling. This allows us to stop sampling for pixels that converge faster. We can do so by computing the I value (1.96 times the square root of sigma^2 over n). We can then compare this to maxTolerance * mu to decide if the pixel has converged. These values can be cleverly computed by just storing a running sum of the illuminance values as well as a running sum of the squares of the illuminance values (as described in the spec). To avoid repeated computation, we can only compute this check every sampleCountBuffer times.
 
-		We rendered the bunny scene with 2048 samples per pixel, 1 sample per light, and 5 max ray depth. Below are the heatmaps for the adaptive sampling convergence rates (left: no russian roulette, right: russian roulette)
+		We rendered the bunny scene with 2048 samples per pixel, 1 sample per light, and 5 max ray depth. Below are the heatmaps for the adaptive sampling convergence rates of the bunny (left: no russian roulette, right: russian roulette).
 		<br/><br/>
 		<img src="./img/part5/bunny_rate.png" width="300">
 		<img src="./img/part5/bunny_rate_rr.png" width="300">
