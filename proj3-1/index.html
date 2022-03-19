@@ -88,14 +88,16 @@
 		<img src="./img/part4/bunny_dir_only_1024_6_5.png" width="300">
 		<img src="./img/part4/bunny_indir_only_1024_6_5.png" width="300">
 		<br/><br/>
-		Here is a comparison between 0, 1, 2, 3, 100 for max ray depth for CBBunny. The lighting becomes brighter as the max ray depth increases, although the difference between 3 and 100 is hard to distinguish (diminishing returns on higher max ray depth).<br/>
+		Here is a comparison between 0, 1, 2, 3, 100 for max ray depth for CBBunny.  
+		Ray depth of 0 returned just zero-bounce lighting, while ray depth 1 returned just direct lighting. 
+		The lighting becomes brighter as the max ray depth increases, although the difference between 3 and 100 is hard to distinguish (diminishing returns on higher max ray depth).<br/>
 		<img src="./img/part4/bunny_0.png" width="300">
 		<img src="./img/part4/bunny_1.png" width="300">
 		<img src="./img/part4/bunny_2.png" width="300">
 		<img src="./img/part4/bunny_3.png" width="300">
 		<img src="./img/part4/bunny_100.png" width="300">
 		<br/><br/>
-		Here is a render of the dragon using various sample per pixel rates (1,2,4,8,16,64,128,1024). The dragon is less grainy as the sample per pixel rate increases.
+		Here is a render of the dragon using various sample per pixel rates (1,2,4,8,16,64,128,1024). The dragon rendering is less grainy and noisy as the sample per pixel rate increases.
 		<br/><br/>
 		<img src="./img/part4/dragon_1_4_6.png" width="300">
 		<img src="./img/part4/dragon_2_4_6.png" width="300">
