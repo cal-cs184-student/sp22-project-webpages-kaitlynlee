@@ -9,20 +9,20 @@
 		Walk through the ray generation and primitive intersection parts of the rendering pipeline.
 		Explain the triangle intersection algorithm you implemented in your own words.
 		Show images with normal shading for a few small .dae files.
-		<img src = "part2/CBempty.png" style = "width:600px"/><br><br>
-		<img src = "part2/CBspheres.png" style = "width:600px"/><br><br>
-		<img src = "part2/cow.png" style = "width:600px"/>
+		<img src = "img/part2/CBempty.png" style = "width:600px"/><br><br>
+		<img src = "img/part2/CBspheres.png" style = "width:600px"/><br><br>
+		<img src = "img/part2/cow.png" style = "width:600px"/>
 
 
 		<h2>Part 2</h2>
 
-		<img src = "part2/CBLucy.png" style = "width:600px"/>
+		<img src = "img/part2/CBLucy.png" style = "width:600px"/>
 		[PathTracer] Rendering... 100%! (0.0561s)
 		Rendering... 100%! (0.1343s)
 
-		<img src = "part2/maxplanck.png" style = "width:600px"/>
+		<img src = "img/part2/maxplanck.png" style = "width:600px"/>
 		Rendering... 100%! (0.1911s)
-		<img src = "part2/banana.png" style = "width:600px"/>
+		<img src = "img/part2/banana.png" style = "width:600px"/>
 		[PathTracer] Building BVH from 2458 primitives... Done! (0.0000 sec)
 		Rendering... 100%! (25.8666s)
 		Rendering... 100%! (28.1280s)
@@ -31,7 +31,7 @@
 		Rendering... 100%! (0.1522s)
 		[PathTracer] Building BVH from 2458 primitives... Done! (0.0009 sec)
 
-		<img src = "part2/cow.png" style = "width:600px"/>
+		<img src = "img/part2/cow.png" style = "width:600px"/>
 		Rendering... 100%! (87.3210s)
 		Rendering... 100%! (87.5035s)
 		[PathTracer] Building BVH from 5856 primitives... Done! (0.0001 sec)
@@ -42,7 +42,7 @@
 		Rendering... 100%! (0.2507s)
 		[PathTracer] Building BVH from 5856 primitives... Done! (0.0023 sec)
 
-		<img src = "part2/teapot.png" style = "width:600px"/>
+		<img src = "img/part2/teapot.png" style = "width:600px"/>
 		Rendering... 100%! (26.1212s)
 		[PathTracer] Building BVH from 2464 primitives... Done! (0.0000 sec)
 		optimized
@@ -51,5 +51,20 @@
 		Rendering... 100%! (0.1533s)
 		Rendering... 100%! (0.1564s)
 		[PathTracer] Building BVH from 2464 primitives... Done! (0.0009 sec)
+
+		<br/><br/><br/><br/><br/>
+		<h2>Part 4</h2>
+		For part 4, we implemented indirect lighting. The idea is that we initialize L to be
+
+		<br/><br/><br/><br/><br/>
+		<h2>Part 5</h2>
+		For part 5, we implemented adaptive sampling. This allows us to stop sampling for pixels that converge faster. We can do so by computing the I value (1.96 times the square root of sigma^2 over n). We can then compare this to maxTolerance * mu to decide if the pixel has converged. These values can be cleverly computed by just storing a running sum of the illuminance values as well as a running sum of the squares of the illuminance values (as described in the spec). To avoid repeated computation, we can only compute this check every sampleCountBuffer times.
+
+		We rendered the bunny scene with 2048 samples per pixel, 1 sample per light, and 5 max ray depth. Below are the heatmaps for the adaptive sampling convergence rates (left: no russian roulette, right: russian roulette)
+		<br/><br/>
+		<img src="./img/part5/bunny_rate.png" width="300">
+		<img src="./img/part5/bunny_rate_rr.png" width="300">
+		<br/><br/>
+
 	</body>
 </html>
