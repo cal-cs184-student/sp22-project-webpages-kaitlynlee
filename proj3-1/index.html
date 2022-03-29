@@ -8,7 +8,7 @@
 		<h2>Part 1</h2>
 		In part 1, we wrote code to generate rays. We can use the equations given in the spec, translating by .5 and then multiplying by tan(hFov/2) (hFoV or vFoV depending on x/y). We multiply this by 2 to ensure the top right corner is (tan(hFov/2), tan(vFov/2), -1).
 		<br/><br/>
-		For ray-triangle intersection, we can use barycentric coordinates to check if the intersection lies inside the triangle. The Muller Trumbore algorithm was useful, given a ray, to compute t, alpha, and beta (for the barycentric coordinates).
+		For ray-triangle intersection, we can use barycentric coordinates to check if the intersection lies inside the triangle. Given a ray, we used the the Muller Trumbore algorithm to compute t (the parameter of ray intersection with the plane), and also alpha, and beta (for the barycentric coordinates). Once we had the barycentric coordinates, we were able to detect if the intersection point was in the triangle by checking to see if all the barycentric coordinates were greater than 0. 
 		<br/><br/>
 		For ray-sphere intersection, we followed the procedure in lecture. Ray-sphere intersections can be determined using the quadratic formula. We computed the determinant (using a,b,c formulas from lecture) and if the determinant was negative, we concluded there was no intersections (because no real t values). Otherwise we calculated the t values that were solutions to the quadratic formula.
 		<br/><br/>
@@ -88,14 +88,16 @@
 		<img src="./img/part4/bunny_dir_only_1024_6_5.png" width="300">
 		<img src="./img/part4/bunny_indir_only_1024_6_5.png" width="300">
 		<br/><br/>
-		Here is a comparison between 0, 1, 2, 3, 100 for max ray depth for CBBunny. The lighting becomes brighter as the max ray depth increases, although the difference between 3 and 100 is hard to distinguish (diminishing returns on higher max ray depth).<br/>
+		Here is a comparison between 0, 1, 2, 3, 100 for max ray depth for CBBunny.  
+		Ray depth of 0 returned just zero-bounce lighting, while ray depth 1 returned just direct lighting. 
+		The lighting becomes brighter as the max ray depth increases, although the difference between 3 and 100 is hard to distinguish (diminishing returns on higher max ray depth).<br/>
 		<img src="./img/part4/bunny_0.png" width="300">
 		<img src="./img/part4/bunny_1.png" width="300">
 		<img src="./img/part4/bunny_2.png" width="300">
 		<img src="./img/part4/bunny_3.png" width="300">
 		<img src="./img/part4/bunny_100.png" width="300">
 		<br/><br/>
-		Here is a render of the dragon using various sample per pixel rates (1,2,4,8,16,64,128,1024). The dragon is less grainy as the sample per pixel rate increases.
+		Here is a render of the dragon using various sample per pixel rates (1,2,4,8,16,64,128,1024). The dragon rendering is less grainy and noisy as the sample per pixel rate increases.
 		<br/><br/>
 		<img src="./img/part4/dragon_1_4_6.png" width="300">
 		<img src="./img/part4/dragon_2_4_6.png" width="300">
