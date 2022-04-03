@@ -27,8 +27,13 @@
 			This means that there will be a range of depth in the scene that will be in focus, and anything outside that range will be out of focus (if it is too close or too far back).  </p>
 
 		<br>
+
+		<h4>Implementation</h4>
+		We model the thin lens with a disk of given lens radius, and sample an intersection point of  a ray from the image plane with a point on the lens. 
+		We then generate the intersection point of the refracted ray with the plane of focus, and added in the original position on the image plane to that ray. We return this modified ray instead of the ray directly from the image plane to the plane of focus. 
+
 		<h4>Focus Stack</h4>
-		<p>Here we can see the affects of varying the focal distance while keeping the aperature constant.</p><br><br>
+		<p>Here we can see the affects of varying the focal distance while keeping the aperture constant. As we increase the focal distance, we see that the depth of focus increases and the area in focus seems to move further and further "back" into the image. This is because increasing focal distance increases the sharpness of the viewing angle and the magnification of the image. </p><br><br>
 		Lens radius (aperture) = 0.1, focal distance = 2.9 <br>
 		<img src = "images/part2/CBdragon_dof1.png" style = "width: 600px"/><br><br>
 		Lens radius (aperture) = 0.1, focal distance = 3.3 <br>
@@ -39,7 +44,8 @@
 		<img src = "images/part2/CBdragon_dof7.png" style = "width: 600px"/><br><br>
 
 		<h4>Aperture Stack</h4>
-		<p>Here we can see the affects of varying the aperature while keeping the rendering focused on the center of the dragon. As lens radius increases, the area in focus decreases. </p><br><br>
+		<p>Here we can see the affects of varying the aperature while keeping the rendering focused on the center of the dragon. 
+			As lens radius (aperture) increases, the more light is let in to the camera, which means that depth of field decreases and the area in focus is smaller. </p><br><br>
 		Lens radius (aperture) = 0.02, focal distance = 3.3 <br>
 		<img src = "images/part2/CBdragon_a1.png" style = "width: 600px"/><br><br>
 		Lens radius (aperture) = 0.09, focal distance = 3.3 <br>
