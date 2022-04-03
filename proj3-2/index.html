@@ -21,6 +21,14 @@
 
 		At depth 0, we just only see the light source which is to be expected. At depth 1, we see the first bounce which bounces on the walls of the room. The spheres only show black with a bit of white from the light source since there is only a single bounce of reflection/refraction from the light source. At depth 2, the spheres now show reflection/refraction from the walls and surrounding objects since it has the second bounce. The reflection in the sphere contains the other sphere which is dark still until depth 3. The differences between depths 4, 5, and 100 are hard to notice by the naked eye due to their very small contributions, but generally the pictures are slightly brighter due to the extra bounces added. 
 
+		<h4>Implementation</h4>
+		To implement BSDF reflect, we can simply flip the signs on the x and y components. For MirrorBSDF::sample_f we can call reflect to get a wi and return reflectance / abs_cos_theta(*wi).
+		<br/>
+		Refraction can be implemented using the steps described in the spec. We check dot(wo, N) > 0 for the enter case, otherwise we are in the exit case. We can check for total internal reflection and if we don't, we can proceed and return values for wi.
+		<br/>
+		Lastly, we can implement glassy materials as described in the spec. We first check if there is total internal reflection, and if it does then we reflect with pdf=1. Otherwise we do a coin flip to either reflect or refract.
+		<br/>
+
 		<h2>Part 4</h2>
 		<p>In this part of the project, we implemented a thin lens model for our camera. 
 			With the pinhole camera model, we assumed that light was only entering the camera through a tiny hole, so everything is in focus. However, most cameras (and the human eye) use the thin lens model. With the thin lens model, objects are in focus only if they're within a plane that is some distance from the lens (this distance depends on the focal length of the lens). 
@@ -54,6 +62,9 @@
 		<img src = "images/part2/CBdragon_a3.png" style = "width: 600px"/><br><br>
 		Lens radius (aperture) = 0.23, focal distance = 3.3 <br>
 		<img src = "images/part2/CBdragon_a4.png" style = "width: 600px"/><br><br>
+
+		<h4>Collaboration</h4>
+		Overall, this was a fun project. We talked about the approaches for parts 1 and 4 and then each implemented one part on our own. For part 1, it was interesting to learn about Schlick's approximation/Fresnel Equations and how they can model a pretty accurate looking glass material. For part 4, it was cool to see how we could model real-world cameras and our own eyes using some fairly straightforward math to show the depth of field effect.
 
 	</body>
 </html>
