@@ -174,8 +174,8 @@
 		<!-- Compare how your the two shaders react to the sphere by changing the sphere mesh's coarseness by using -o 16 -a 16 and then -o 128 -a 128. -->
 
 		<p>
-			We varied the coarseness of the meshes and compared our two shader approaches. We noticed no difference for the bump mapping shader, but we did notice that the displacement mapping looking noticably smoother and more realistic with the finer mesh.
-			 This is because for the bump mapping shader, we only modified the fragment shader, which is run on each pixel regardless of mesh coarseness. However, with displacement mapping we also modified the vertex shader. As we change the mesh coarseness, we also change the sphere vertices, which affects how finely grained our textures will appear.
+			We varied the coarseness of the meshes using the flags -o 16 -a 16 (a coarse mesh) and -o 128 -a 128 (a fine mesh) and compared our two shader approaches. We noticed no difference for the bump mapping shader, but we did notice that the displacement mapping looking noticably smoother and more realistic with the finer mesh.
+			 This is because for the bump mapping shader, we only modified the fragment shader, which is run on each pixel regardless of mesh coarseness. However, with displacement mapping we also modified the vertex shader. As we change the mesh coarseness, we also change the number of vertices on the sphere, which affects how finely grained our textures will appear.
 
 		</p>
 		<b>Low Resolution (-o 16 -a 16)</b><br>
