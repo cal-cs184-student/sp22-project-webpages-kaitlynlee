@@ -62,14 +62,143 @@
 
 
 		<h2>Part 4</h2>
-		<img src="./img/part4/1.png" width="600"><br>
-		<img src="./img/part4/2.png" width="600"><br>
-		<img src="./img/part4/3.png" width="600"><br>
-		<img src="./img/part4/4.png" width="600"><br>
-		<img src="./img/part4/5.png" width="600"><br>
+		<img src="./img/part4/2.png" width="600">
+		<img src="./img/part4/3.png" width="600">
+		<img src="./img/part4/4.png" width="600">
+		<img src="./img/part4/5.png" width="600">
+		<img src="./img/part4/6.png" width="600">
+		<img src="./img/part4/7.png" width="600">
 
-		<br><h6>This is a gif of the process-- it doesn't loop, so you may have to refresh to see it again.</h6>
-		<img src="./img/part4/part4.gif" width="600">
+		<h5>Varying d and ks values</h5>
+		<h6>Low d (d = 1, ks = 5000)</h6>
+		<p>Lowering d means that there are less masses representing our cloth mesh. This is reflected by how the folds resulting from the self-collision are much thicker than a cloth with higher d. The cloth almost seems bouncier. </p>
+		<img src="./img/part4/d1.png" width="600">
+		<img src="./img/part4/d2.png" width="600">
+		<img src="./img/part4/d3.png" width="600">
+		<img src="./img/part4/d4.png" width="600">
+		<img src="./img/part4/d5.png" width="600"> 
+		<img src="./img/part4/d6.png" width="600"> 
+		<img src="./img/part4/d7.png" width="600"> 
+		<img src="./img/part4/d8.png" width="600"> 
+
+
+		<h6>high d (d = 30, ks = 5000)</h6>
+		<p>Raising d means that there are more masses in our cloth mesh. This is reflected by how the folds resulting from the self-collision are much finer than a cloth with lower d. The cloth ends up with very fine creases. The fabric seems like one that has very fine fibers, like silk. </p>
+
+		<img src="./img/part4/dl1.png" width="600">
+		<img src="./img/part4/dl2.png" width="600"> 
+		<img src="./img/part4/dl3.png" width="600"> 
+		<img src="./img/part4/dl4.png" width="600"> 
+		<img src="./img/part4/dl5.png" width="600"> 
+		<img src="./img/part4/dl6.png" width="600"> 
+		<img src="./img/part4/dl7.png" width="600"> 
+		<img src="./img/part4/dl8.png" width="600"> 
+
+		<h6>low ks (d = 15, ks = 100)</h6>
+		<p>Lowering ks means we are lowering the spring constants of the springs connecting the masses in our cloth mesh. Lowering ks results in a cloth crumples very easily and doesn't maintain its shape well. As you can see, the cloth ends up in a resting state that has a lot of bumps, especially compared the other resting states. </p>
+		<img src="./img/part4/ks1.png" width="600"> 
+		<img src="./img/part4/ks2.png" width="600">
+		<img src="./img/part4/ks3.png" width="600"> 
+		<img src="./img/part4/ks4.png" width="600"> 
+		<img src="./img/part4/ks5.png" width="600"> 
+		<img src="./img/part4/ks6.png" width="600"> 
+		<img src="./img/part4/ks7.png" width="600"> 
+
+
+		<h6>High ks (d = 15, ks = 20000)</h6>
+		<p>Raising ks means we are raising the spring constants of the springs connecting the masses in our cloth mesh. Raising ks results in a cloth that tends to want to maintain its shape after collision. As you can see, the cloth wrinkles are much thicker than when we had a low ks, and the cloth also comes to a much flatter resting state.</p>
+
+		<img src="./img/part4/ksh1.png" width="600"> 
+		<img src="./img/part4/ksh2.png" width="600"> 
+		<img src="./img/part4/ksh3.png" width="600"> 
+		<img src="./img/part4/ksh4.png" width="600"> 
+		<img src="./img/part4/ksh5.png" width="600"> 
+		<img src="./img/part4/ksh6.png" width="600"> 
+
+		<h2>Part 5</h2>
+		<br> A shader program is an isolated program that runs in parallel on a GPU while most of the other rendering computations are done on CPU. 
+		Vertex shaders transform vertices by updating their position or normal vectors. 
+		Fragment shaders compute a color from the position and normal vectors computed by the vertex shaders. 
+		Both combined together can create the lighting effects we implemented in Project 3. 
+
+		<h4>Blinn-Phong Shading model</h4>
+
+		Blinn Phong shading accounts for ambient lighting, diffuse reflection, and specular highlights. 
+		Ambient lighting is shading that does not depend on anything. It is used to  account for disregarded illumination and fill in black shadows. We treat this as a constant value. 
+		Diffuse reflection is independent of viewing direction and gives the intrinsic color of the surface. We model this by multiplying the diffuse coefficient with the source illumination and the dot prodcut of the normal and the lighting direction. 
+		Specular highlights are computed using a dot product of the normal and the bisector of the vector from the intersection point to source and intersection point to camera.
+
+		<br> We add these three terms to get our final Blinn-Phong shading model. 
+		<br><br>
+		Ambient Lighting only<br>
+		<img src="./img/part4/term1.png" width="1000"><br><br>
+
+		Diffuse Reflection only<br>
+		<img src="./img/part4/term2.png" width="1000"><br><br>
+
+		Specular highlights only<br>
+		<img src="./img/part4/term3.png" width="1000"><br><br>
+
+		All put together<br>
+		<img src="./img/part4/total.png" width="1000"><br><br>
+
+
+		<h4>Custom Texture</h4>
+		<img src="./img/part4/texture1.png" width="600">
+		<img src="./img/part4/texture1_2.png" width="600"><br><br>
+
+		<img src="./img/part4/texture2.png" width="600">
+		<img src="./img/part4/texture2_3.png" width="600">
+		<img src="./img/part4/texture2_2.png" width="600"><br><br>
+
+		<h4>Bump Mapping vs Displacement Mapping</h4>
+
+		Bump Mapping <br>
+		<img src="./img/part4/bump.png" width="600">
+		<img src="./img/part4/bump2.png" width="600"><br><br>
+
+		Displacement Mapping</br>
+		<img src="./img/part4/displacement.png" width="600">
+		<img src="./img/part4/displacement2.png" width="600"><br><br>
+
+		<!-- Compare the two approaches and resulting renders in your own words.  -->
+		<p>In bump mapping, we modify the normal vectors of an object so that we give the illusion of detail on the surface. We use a given height map to calculate the local space normals as we traverse across a texture, and use this calculation to modify the original surface normals.</p>
+
+		<p>On the other hand, in displacement mapping, not only do we modify the surface normals, we also modify the position of the vertices in order to mimic texture on a surface. We do this by moving the vertices in the direction of our computed space normal vectors.</p>
+
+		<p>These two approaches result in different renders. While the bump mapping gives us the illusion of texture when looking straight on at a surface, the edges look very obviously smooth. For example, if the sphere were truly brick textured, we might expect see to have the ridges in the edge of the sphere, but it instead it looks smooth. 
+			On the other hand, the displacement mapping does have those bumps and ridges in the surface itself. This lends it a more realistic look in this specific rendering. 
+		</p>
+		<h5>Changing Mesh Coarseness</h5>
+
+		<!-- Compare how your the two shaders react to the sphere by changing the sphere mesh's coarseness by using -o 16 -a 16 and then -o 128 -a 128. -->
+
+		<p>
+			We varied the coarseness of the meshes and compared our two shader approaches. We noticed no difference for the bump mapping shader, but we did notice that the displacement mapping looking noticably smoother and more realistic with the finer mesh.
+			 This is because for the bump mapping shader, we only modified the fragment shader, which is run on each pixel regardless of mesh coarseness. However, with displacement mapping we also modified the vertex shader. As we change the mesh coarseness, we also change the sphere vertices, which affects how finely grained our textures will appear.
+
+		</p>
+		<b>Low Resolution (-o 16 -a 16)</b><br>
+		Bump Mapping <br>
+		<img src="./img/part4/bump_16.png" width="600">
+		<img src="./img/part4/bump2_16.png" width="600"><br><br>
+
+		Displacement Mapping</br>
+		<img src="./img/part4/displacement_16.png" width="600">
+		<img src="./img/part4/displacement2_16.png" width="600"><br><br>
+
+		<b>High Resolution (-o 128 -a 128)</b><br>
+		Bump Mapping <br>
+		<img src="./img/part4/bump_128.png" width="600">
+		<img src="./img/part4/bump2_128.png" width="600"><br><br>
+
+		Displacement Mapping</br>
+		<img src="./img/part4/displacement_128.png" width="600">
+		<img src="./img/part4/displacement2_128.png" width="600"><br><br>
+
+		<h4>Mirror Shading</h4>
+		<img src="./img/part4/mirror.png" width="600">
+		<img src="./img/part4/mirror2.png" width="600"><br><br>
 
 	</body>
 </html>
