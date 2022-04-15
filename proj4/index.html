@@ -7,8 +7,7 @@
 		https://cal-cs184-student.github.io/sp22-project-webpages-kaitlynlee/proj4/index.html
 		<h2>Part 1</h2>
 		
-		In Part 1, we implemented code to set up the masses and springs. We implemented 3 types of constraints: structural, shearing, and bending. The below image shows the top view of the wireframe with all constraints.
-		<br/><br/>
+		In Part 1, we implemented code to set up the masses and springs. We used a double for loop to set up the masses and pointer arithmetic to create the spring constraints. One problem we ran into was segmentation faults due to off by 1 access errors. We implemented 3 types of constraints: structural, shearing, and bending. The below image shows the top view of the wireframe with all constraints.		<br/><br/>
 		<img src="./img/part1/p1_topview.png" width="500">
 
 		<br>These images show what the wireframe looks like (1) without any shearing constraints, (2) with only shearing constraints, and (3) with all constraints.
@@ -46,7 +45,9 @@
 
 		<h2>Part 3</h2>
 
-		In Part 3, we implemented collisions with planes and spheres.
+		In Part 3, we implemented collisions with planes and spheres. For each point mass in our mesh, we checked for collisions with spheres by checking if distance from the point mass to the center of the sphere was less than the radius of the sphere. If it was, we applied a correction vector (scaled by friction) towards the tangent point (where the cloth should rest on the sphere if the collision point was moved in the same direction of the point mass - origin vector).
+
+		Similarly, for planes, we first checked if the point mass intersected with the plane using methods similar to those from the ray intersection tests. If there was an intersection, we applied a correction vector such that the point mass rested on the surface of the plane, along with a SURFACE_OFFSET. We did this by finding the ray from the point mass to the surface, as well as the parameter t, then applying that correction vector with t - SURFACE_OFFSET and scaling it by friction. 
 		<br/><br/>
 		We can play around with different ks values for the sphere. The smaller the ks value, the more droopy it looks. The cloth conforms more to the surface of the sphere. The higher the ks value, the more taut it looks. The high ks value screenshot shows the cloth being very stiff and not conforming to the shape of the sphere very well. The default ks value is an inbetween of the two extremes.
 		<br/><br/>
@@ -62,6 +63,9 @@
 
 
 		<h2>Part 4</h2>
+
+		<p>In part 4 we implemented self-collisions. We did this efficiently by spacially hashing each point mass for every single point in time, and then determining for each mass if it was too close to any other point masses by iterating through all the point masses in the same hash bucket and comparing the distances between them. 
+			This reduced the complexity of checking for collisions from O(N^2) (for naively checking all masses) to O(N). After determining that there was a collision between two point masses, we computed a correction vector, moving the point mass until it was at least some distance away from the other mass. We then computed all such correction vectors for the point mass and moved the point mass by the average of the vectors, scaled down by the number of simulation steps. </p>
 		<img src="./img/part4/2.png" width="600">
 		<img src="./img/part4/3.png" width="600">
 		<img src="./img/part4/4.png" width="600">
@@ -144,6 +148,7 @@
 
 
 		<h4>Custom Texture</h4>
+		<p>Texture shading can be accomplished by just sampling from the 2D texture given a uv vector. </p>
 		<img src="./img/part4/texture1.png" width="600">
 		<img src="./img/part4/texture1_2.png" width="600"><br><br>
 
@@ -197,6 +202,7 @@
 		<img src="./img/part4/displacement2_128.png" width="600"><br><br>
 
 		<h4>Mirror Shading</h4>
+		<p>Mirror shading can be computed using the specular reflection formula given in lecture to get a wi, and then we can sample from the texture with the wi.</p>
 		<img src="./img/part4/mirror.png" width="600">
 		<img src="./img/part4/mirror2.png" width="600"><br><br>
 
